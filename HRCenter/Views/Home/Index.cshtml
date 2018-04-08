@@ -1,0 +1,70 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<div class="list-group">
+
+</div>
+
+<script>
+    let _pageIndex = 1;
+
+    (() => {
+        search();
+    })();
+
+    function search(pageIndex = 1) {
+        $.post("/Home/List", {
+            PageInfo: {
+                Index: pageIndex,
+                //Size: 50,
+                //OrderType: 0,
+                //Directrion: 1
+            },
+            KeywordInfo: {
+                Keywords: $(".keywords").val(),
+                //KeywordSearchRangeType: 3
+            },
+            ExperienceInfo: {
+                ExperienceType: $(".experience").val(),
+                //ExperienceSearchRange: 1
+            },
+            SalaryInfo: {
+                //SalaryType: 3,
+                //SalaryMax: 0,
+                SalaryMin: $(".salary").val()
+            }
+        }).done((res) => {
+            console.log(res);
+            $('.list-group').append(`<h5>第 ${pageIndex} 頁 / 共 ${res.TOTALPAGE} 頁, 每頁 ${res.PAGECOUNT} 筆, 共 ${res.RECORDCOUNT} 筆</h5>`);
+            res.data.forEach((item, index) => {
+                const $job = create(item);
+                $job.hide().appendTo('.list-group').fadeIn('slow');
+            });
+        });
+    }
+
+    function create(jobInfo) {
+        const $content = $(`<div class='d-flex w-100 justify-content-between'></div>`)
+            .append($(`<h5>${jobInfo.JOB} - <small>年資 ${jobInfo.PERIOD_formatted} 年以上</small></h5>`))
+            .append($(`<small>${jobInfo.APPEAR_DATE}</small>`));
+        return $(`<a class='list-group-item list-group-item-action list-group-item-light flex-column align-items-start' target='_blank'></a>`)
+            .attr('href', `${jobInfo.URLToCompanyPage}`)
+            .append($content)
+            .append($(`<span class='badge badge-light nrecn' style='margin-right:10px;'>${jobInfo.JOB_ADDR_NO_DESCRIPT}</span>`))
+            .append($(`<small>${jobInfo.NAME}</small>`))
+            .append($(`<div class='alert alert-warning' style='float:right;'>待遇 ${jobInfo.SAL_MONTH_LOW_formatted} ~ ${jobInfo.SAL_MONTH_HIGH_formatted}</div>`));
+    }
+
+    $(".search").click(() => {
+        $(".list-group").empty();
+        search();
+    });
+
+    $(window).scroll(function () {
+        if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+            console.log('next page');
+            search(++_pageIndex);
+        }
+    });
+</script>

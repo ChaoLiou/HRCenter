@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Center</title>
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/modernizr-2.6.2.js"></script>
+    <script src="~/Scripts/jquery-3.0.0.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="navbar navbar-inverse fixed-top" style="background-color:white">
+        <div class="container">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-default">年資</span>
+                </div>
+                <input type="number" min="0" max="10" value="0" class="form-control experience" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                <div class="input-group-append">
+                    <span class="input-group-text" id="inputGroup-sizing-default">薪資</span>
+                </div>
+                <input type="number" min="0" value="50000" class="form-control salary" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                <div class="input-group-append">
+                    <span class="input-group-text" id="inputGroup-sizing-default">關鍵字</span>
+                </div>
+                <input type="text" placeholder="關於..." class="form-control keywords" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary search" type="button">Go</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container body-content" style="margin-top:20px;">
+        @RenderBody()
+    </div>
+</body>
+</html>
